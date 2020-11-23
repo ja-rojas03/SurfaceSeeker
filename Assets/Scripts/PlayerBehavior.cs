@@ -97,14 +97,22 @@ public class PlayerBehavior : MonoBehaviour
         if(Input.GetKey(KeyCode.UpArrow) && canClimb)
         {
             newVelocity.y = jumpSpeed;
-            newVelocity.x = 0;
+            rb.gravityScale = 0;
 
             animator.SetBool("isClimbing", true);
         }
 
-            
+        if (Input.GetKey(KeyCode.DownArrow) && canClimb)
+        {
+            newVelocity.y = -jumpSpeed;
+            rb.gravityScale = 0;
 
-        
+
+            animator.SetBool("isClimbing", true);
+        }
+
+
+
 
 
 
@@ -214,6 +222,11 @@ public class PlayerBehavior : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.gameObject.tag == "Ladder")
+        {
+            Debug.Log("ENTERED LADDER");
+            canClimb = true;
+        }
 
         if (collision.CompareTag("Chest"))
         {
@@ -246,11 +259,7 @@ public class PlayerBehavior : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         Debug.Log("Collision Detected");
-        if(collision.gameObject.tag == "Ladder")
-        {
-            Debug.Log("ENTERED LADDER");
-            canClimb = true;
-        }
+
 
         if (collision.gameObject.tag == "KillingGround")
         {
@@ -272,11 +281,18 @@ public class PlayerBehavior : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D collision)
     {
+        
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
         if (collision.gameObject.tag == "Ladder")
         {
             canClimb = false;
             Debug.Log("EXITED LADDER");
             animator.SetBool("isClimbing", false);
+            rb.gravityScale = 0.5f;
+
 
         }
     }
