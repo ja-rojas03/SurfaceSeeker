@@ -24,6 +24,9 @@ public class ChestController : MonoBehaviour
             animator.SetTrigger("openChest");
 
 
+            //DO SOMETHING LIKE : 
+            //GameManager.winCourse(historyText); 
+
         }
 
         

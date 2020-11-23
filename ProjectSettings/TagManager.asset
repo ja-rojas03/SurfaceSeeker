@@ -6,6 +6,10 @@ TagManager:
   tags:
   - Chest
   - JumpableWall
+  - Ladder
+  - Floor
+  - KillingGround
+  - Checkpoint
   layers:
   - Default
   - TransparentFX

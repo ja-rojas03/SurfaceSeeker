@@ -8,18 +8,26 @@ public class PlayerBehavior : MonoBehaviour
 
     private Animator animator;
     private Rigidbody2D rb;
+
     public float speed = 3f;
     public float jumpSpeed = 6f;
     public float runSpeed = 6f;
     public bool isRunning = false;
+
     private SkillController skillController;
+
     public Transform RightWallDetector;
     public Transform LeftWallDetector;
+
     public Vector3 WallDetectorSize;
     public bool canWallJump = false;
     public bool isWallJumping = false;
     public bool isJumpingFromRight = false;
     public bool isJumpingFromLeft = false;
+    private bool canClimb = false;
+    private Vector3 initialPosition;
+    private Vector3 checkpoint;
+
     public PhysicsMaterial2D WallJumpSlideMaterial;
     private SpriteRenderer spriteRenderer;
 
@@ -41,6 +49,8 @@ public class PlayerBehavior : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         skillController = gameObject.GetComponent<SkillController>();
         snakePowerUp = gameObject.GetComponent<snakePowerUp>();
+        initialPosition = transform.position;
+        checkpoint = initialPosition;
 
     }
 
@@ -82,6 +92,14 @@ public class PlayerBehavior : MonoBehaviour
             
             newVelocity.y = jumpSpeed;
             
+        }
+
+        if(Input.GetKey(KeyCode.UpArrow) && canClimb)
+        {
+            newVelocity.y = jumpSpeed;
+            newVelocity.x = 0;
+
+            animator.SetBool("isClimbing", true);
         }
 
             
@@ -214,9 +232,56 @@ public class PlayerBehavior : MonoBehaviour
             
         }
 
+        if (collision.CompareTag("Checkpoint"))
+        {
+            checkpoint = collision.gameObject.transform.position;
+        }
+
+
+
+
+
     }
 
-    
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        Debug.Log("Collision Detected");
+        if(collision.gameObject.tag == "Ladder")
+        {
+            Debug.Log("ENTERED LADDER");
+            canClimb = true;
+        }
+
+        if (collision.gameObject.tag == "KillingGround")
+        {
+            if(checkpoint != initialPosition)
+            {
+
+            }else
+            {
+            transform.position = initialPosition;
+            }
+
+            transform.position = checkpoint != initialPosition 
+                ? checkpoint 
+                : initialPosition;
+            //TAKE LIFE POINT AWAY
+
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Ladder")
+        {
+            canClimb = false;
+            Debug.Log("EXITED LADDER");
+            animator.SetBool("isClimbing", false);
+
+        }
+    }
+
+
     private void OnDrawGizmosSelected()
     {
         // Draw left "collider"

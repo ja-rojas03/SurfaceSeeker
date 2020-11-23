@@ -10,5 +10,6 @@ public enum Skills
     WALLJUMP,
 
     SLASH,
+
 }
 
