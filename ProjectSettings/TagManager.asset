@@ -48,6 +48,9 @@ TagManager:
   - name: BgColor
     uniqueID: 17096427
     locked: 0
+  - name: BG layer 1
+    uniqueID: 2319939699
+    locked: 0
   - name: BgData
     uniqueID: 2494153007
     locked: 0
