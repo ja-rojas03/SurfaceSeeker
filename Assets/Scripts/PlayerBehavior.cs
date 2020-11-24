@@ -36,6 +36,8 @@ public class PlayerBehavior : MonoBehaviour
 
     private snakePowerUp snakePowerUp;
 
+    private int health = 3;
+
    
     
 
@@ -233,7 +235,6 @@ public class PlayerBehavior : MonoBehaviour
     {
         if (collision.gameObject.tag == "Ladder")
         {
-            Debug.Log("ENTERED LADDER");
             canClimb = true;
         }
 
@@ -285,6 +286,27 @@ public class PlayerBehavior : MonoBehaviour
                 : initialPosition;
             //TAKE LIFE POINT AWAY
 
+            removeHealth();
+
+        }
+
+
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            Debug.Log("Health" + health);
+            if (health > 0)
+            {
+
+                removeHealth();
+            Debug.Log("Health AFTER DMG" + health);
+            }
+            else
+            {
+                //Do death thingy here
+                // maybe reset game ? DO NOT DESTROY OBJ
+                GameObject.FindGameObjectWithTag("MainCamera").GetComponent<GameManager>().retryLevel();
+                Debug.Log("DED");
+            }
         }
     }
 
@@ -342,5 +364,11 @@ public class PlayerBehavior : MonoBehaviour
             availableJumps -= 1f;
         }
     }
+
+    public void removeHealth()
+    {
+        health -= 1;
+    }
+
 
 }

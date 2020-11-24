@@ -79,6 +79,10 @@ public class GameManager : MonoBehaviour
         player.Pause();
     }
 
+    public void retryLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
   
 
 }

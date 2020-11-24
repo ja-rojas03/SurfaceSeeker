@@ -11,6 +11,8 @@ TagManager:
   - KillingGround
   - Checkpoint
   - Jumping
+  - Enemy
+  - Wall
   layers:
   - Default
   - TransparentFX
