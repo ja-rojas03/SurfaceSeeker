@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices.ComTypes;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerBehavior : MonoBehaviour
 {
 
     private Animator animator;
     private Rigidbody2D rb;
+    public GameObject slash;
 
-    public float speed = 3f;
-    public float jumpSpeed = 6f;
+    public float speed = 4f;
+    public float jumpSpeed = 7f;
     public float runSpeed = 6f;
     public bool isRunning = false;
     public float availableJumps = 2f;
@@ -37,15 +39,12 @@ public class PlayerBehavior : MonoBehaviour
     private snakePowerUp snakePowerUp;
 
     private int health = 3;
+    private bool isSnake = false;
 
-   
-    
+
+
 
     // Start is called before the first frame update
-    void Start()
-    {
-       
-    }
 
     void Awake()
     {
@@ -61,8 +60,23 @@ public class PlayerBehavior : MonoBehaviour
 
         pause = false;
 
+      
+
+    }
+    void Start()
+    {
+        if (SceneManager.GetActiveScene().buildIndex > 1)
+        {
+            Debug.Log("ADDING SKILS");
+            skillController.obtainSkill(Skills.SLASH);
+            skillController.obtainSkill(Skills.WALLJUMP);
+            skillController.obtainSkill(Skills.DASH);
+            Debug.Log(skillController.availableSkills.Count);
+        }
+
     }
 
+    
     // Update is called once per frame
     void Update()
     {
@@ -70,7 +84,7 @@ public class PlayerBehavior : MonoBehaviour
         if (pause) return;
 
         Vector2 newVelocity = rb.velocity;
-        bool isSnake = snakePowerUp.isActive;
+        //bool isSnake = snakePowerUp.isActive;
 
 
         if (Input.GetKey(KeyCode.LeftArrow))
@@ -128,19 +142,49 @@ public class PlayerBehavior : MonoBehaviour
 
 
         rb.velocity = newVelocity;
-        
 
-        if(skillController.hasSkill(Skills.DASH) && Input.GetKey(KeyCode.LeftShift))
+
+        if (skillController.hasSkill(Skills.SLASH) && Input.GetKeyDown(KeyCode.A))
+        {
+            animator.SetTrigger("slash");
+            float val = spriteRenderer.flipX == true
+                ? transform.position.x - 1
+                : transform.position.x + 1;
+
+            GameObject slashInstance = Instantiate(slash, new Vector3(val, transform.position.y, 0), Quaternion.identity);
+            SlashController slashcon = slashInstance.GetComponent<SlashController>();
+
+            float speed = spriteRenderer.flipX == true
+                ? -slashcon.speed
+                : slashcon.speed;
+            slashcon.setDirection(spriteRenderer.flipX);
+            slashcon.speed = speed;
+
+        }
+
+        if (skillController.hasSkill(Skills.HOVER) && Input.GetKeyDown(KeyCode.D))
+        {
+            rb.gravityScale = 0.5f;
+        }
+
+        if(skillController.hasSkill(Skills.HOVER) && Input.GetKeyUp(KeyCode.D))
+        {
+            rb.gravityScale = 1f;
+        }
+
+        if (skillController.hasSkill(Skills.DASH) && Input.GetKey(KeyCode.LeftShift))
         {
             skillController.dash();
             isRunning = true;
             animator.SetTrigger("run");
         } else if(Input.GetKeyUp(KeyCode.LeftShift))
         {
-            speed = 3f;
+            speed = 4f;
         }
+
+
         // Check left side colliding:
-         Collider2D[] collidersLeft =  Physics2D.OverlapBoxAll(LeftWallDetector.position, WallDetectorSize, 0f, LayerMask.GetMask("JumpableWall"));
+        Collider2D[] collidersLeft =  Physics2D.OverlapBoxAll(LeftWallDetector.position, WallDetectorSize, 0f, LayerMask.GetMask("JumpableWall"));
         
         //Check right side colliding:
         Collider2D[] collidersRight = Physics2D.OverlapBoxAll(RightWallDetector.position, WallDetectorSize, 0f, LayerMask.GetMask("JumpableWall"));
@@ -227,7 +271,12 @@ public class PlayerBehavior : MonoBehaviour
 
         }
 
-        animator.SetBool("isSnake", isSnake);
+        if (Input.GetKeyDown(KeyCode.S) && skillController.hasSkill(Skills.SNAKE))
+        {
+            this.isSnake = !isSnake;
+            animator.SetBool("isSnake", isSnake);
+            animator.SetTrigger("snake");
+        }
 
     }
 
@@ -249,7 +298,6 @@ public class PlayerBehavior : MonoBehaviour
                 {
                     skillController.obtainSkill(chest.skill);
                 }
-                Debug.Log(skillController.availableSkills);
                     
             }
             
@@ -268,7 +316,6 @@ public class PlayerBehavior : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("Collision Detected");
 
 
         if (collision.gameObject.tag == "KillingGround")
@@ -293,12 +340,10 @@ public class PlayerBehavior : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            Debug.Log("Health" + health);
             if (health > 0)
             {
 
                 removeHealth();
-            Debug.Log("Health AFTER DMG" + health);
             }
             else
             {
@@ -320,7 +365,6 @@ public class PlayerBehavior : MonoBehaviour
         if (collision.gameObject.tag == "Ladder")
         {
             canClimb = false;
-            Debug.Log("EXITED LADDER");
             animator.SetBool("isClimbing", false);
             rb.gravityScale = initialGravity;
 

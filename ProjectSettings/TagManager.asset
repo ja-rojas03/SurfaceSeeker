@@ -13,6 +13,7 @@ TagManager:
   - Jumping
   - Enemy
   - Wall
+  - MG
   layers:
   - Default
   - TransparentFX

@@ -99,6 +99,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skill: 0
   isOpen: 0
+  isWinnable: 0
 --- !u!61 &5815831042547580729
 BoxCollider2D:
   m_ObjectHideFlags: 0

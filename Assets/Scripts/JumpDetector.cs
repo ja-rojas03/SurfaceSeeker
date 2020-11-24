@@ -20,10 +20,9 @@ public class JumpDetector : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("ENTERED TRIGGER JUMP RESET");
-        if(!collision.CompareTag("Player"))
+        if(!collision.CompareTag("Player") && !collision.CompareTag("Chest") && !collision.CompareTag("Checkpoint"))
         {
-
+            Debug.Log("JUMP RESET");
             player.resetJump();
         }
     }

@@ -11,5 +11,8 @@ public enum Skills
 
     SLASH,
 
+    SNAKE,
+
+    HOVER,
 }
 
