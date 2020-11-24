@@ -8,11 +8,14 @@ public class SkillController : MonoBehaviour
     // Start is called before the first frame update
    public List<Skills> availableSkills;
     public PlayerBehavior player;
-    
+    public Skills WALLJUMP;
+
+
     void Start()
     {
         availableSkills = new List<Skills>();
         player = gameObject.GetComponent<PlayerBehavior>();
+
         
     }
 

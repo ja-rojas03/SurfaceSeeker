@@ -13,6 +13,7 @@ public class PlayerBehavior : MonoBehaviour
     public float jumpSpeed = 6f;
     public float runSpeed = 6f;
     public bool isRunning = false;
+    public float availableJumps = 2f;
 
     private SkillController skillController;
 
@@ -25,10 +26,10 @@ public class PlayerBehavior : MonoBehaviour
     public bool isJumpingFromRight = false;
     public bool isJumpingFromLeft = false;
     private bool canClimb = false;
-    private Vector3 initialPosition;
-    private float initialGravity;
-    private Vector3 checkpoint;
     private bool pause;
+    private float initialGravity;
+    private Vector3 initialPosition;
+    private Vector3 checkpoint;
 
     public PhysicsMaterial2D WallJumpSlideMaterial;
     private SpriteRenderer spriteRenderer;
@@ -94,10 +95,11 @@ public class PlayerBehavior : MonoBehaviour
             animator.SetBool("walk", false);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && !isSnake)
+        if (Input.GetKeyDown(KeyCode.Space) && !isSnake && availableJumps > 0)
         {
             
             newVelocity.y = jumpSpeed;
+            removeJump();
             
         }
 
@@ -326,6 +328,19 @@ public class PlayerBehavior : MonoBehaviour
         rb.velocity = new Vector3(0, 0, 0);
         animator.SetBool("walk", false);
 
+    }
+
+    public void resetJump()
+    {
+        availableJumps = 2f;
+    }
+
+    public void removeJump()
+    {
+        if(availableJumps > 0)
+        {
+            availableJumps -= 1f;
+        }
     }
 
 }
