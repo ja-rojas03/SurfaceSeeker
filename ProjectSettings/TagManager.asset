@@ -44,12 +44,24 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Default
-    uniqueID: 0
-    locked: 0
   - name: BgColor
     uniqueID: 17096427
     locked: 0
   - name: BgData
     uniqueID: 2494153007
+    locked: 0
+  - name: BackgroundDetails
+    uniqueID: 2468465349
+    locked: 0
+  - name: Background
+    uniqueID: 266006209
+    locked: 0
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Middleground
+    uniqueID: 3125302263
+    locked: 0
+  - name: HUD
+    uniqueID: 452047279
     locked: 0

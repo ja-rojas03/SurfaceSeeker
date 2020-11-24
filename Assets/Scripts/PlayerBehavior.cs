@@ -26,7 +26,9 @@ public class PlayerBehavior : MonoBehaviour
     public bool isJumpingFromLeft = false;
     private bool canClimb = false;
     private Vector3 initialPosition;
+    private float initialGravity;
     private Vector3 checkpoint;
+    private bool pause;
 
     public PhysicsMaterial2D WallJumpSlideMaterial;
     private SpriteRenderer spriteRenderer;
@@ -50,14 +52,19 @@ public class PlayerBehavior : MonoBehaviour
         skillController = gameObject.GetComponent<SkillController>();
         snakePowerUp = gameObject.GetComponent<snakePowerUp>();
         initialPosition = transform.position;
+        initialGravity = rb.gravityScale;
         checkpoint = initialPosition;
+
+
+        pause = false;
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
+        if (pause) return;
 
         Vector2 newVelocity = rb.velocity;
         bool isSnake = snakePowerUp.isActive;
@@ -291,7 +298,7 @@ public class PlayerBehavior : MonoBehaviour
             canClimb = false;
             Debug.Log("EXITED LADDER");
             animator.SetBool("isClimbing", false);
-            rb.gravityScale = 0.5f;
+            rb.gravityScale = initialGravity;
 
 
         }
@@ -311,6 +318,14 @@ public class PlayerBehavior : MonoBehaviour
     public void StopWallJump()
     {
         isWallJumping = false;
+    }
+
+    public void Pause()
+    {
+        this.pause = !pause;
+        rb.velocity = new Vector3(0, 0, 0);
+        animator.SetBool("walk", false);
+
     }
 
 }

@@ -9,27 +9,42 @@ public class ChestController : MonoBehaviour
     public Skills skill;
 
     public bool isOpen = false;
+
+    public bool isWinnable = false;
+
     private Animator animator;
+    private GameManager gm;
+
 
     private void Awake()
     {
         animator = gameObject.GetComponent<Animator>();
+        gm = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<GameManager>();
+
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && isOpen)
+
+        if (collision.CompareTag("Player") && isWinnable)
+        {
+
+            //DO SOMETHING LIKE : 
+            //GameManager.winCourse(historyText); 
+            gm.showMessage();
+
+
+        }
+
+
+        if (collision.CompareTag("Player") && !isOpen && !isWinnable)
         {
             
             Debug.Log("Player is in chest");
             animator.SetTrigger("openChest");
 
 
-            //DO SOMETHING LIKE : 
-            //GameManager.winCourse(historyText); 
-
         }
 
-        
     }
 
     private void OnTriggerExit2D(Collider2D collision)
