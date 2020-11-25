@@ -106,6 +106,11 @@ public class PlayerBehavior : MonoBehaviour
             GameObject.FindGameObjectWithTag("MainCamera").GetComponent<GameManager>().pauseGame();
         }
 
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            GameObject.FindGameObjectWithTag("MainCamera").GetComponent<GameManager>().MutePressed();
+        }
+
         if (pause) return;
 
         Vector2 newVelocity = rb.velocity;

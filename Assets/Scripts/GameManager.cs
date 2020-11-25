@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
 
     public Canvas pauseCanvas;
     public GameObject music;
+    private bool isMuted;
 
 
     private float timer;
@@ -39,6 +40,10 @@ public class GameManager : MonoBehaviour
 
 
 
+    public void Awake()
+    {
+        isMuted = PlayerPrefs.GetInt("muted",0) == 1;
+    } 
 
     // Start is called before the first frame update
     void Start()
@@ -92,6 +97,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void MutePressed()
+    {
+        isMuted = !isMuted;
+        AudioListener.pause = isMuted; 
+        PlayerPrefs.SetInt("muted", isMuted ? 1 : 0);
+    }
+
     public void toggleHistory()
     {
         gameHistory.SetActive(!gameHistory.active);
@@ -139,8 +151,10 @@ public class GameManager : MonoBehaviour
     {
         if (pauseCanvas)
         {
-            if (pause)
-            {
+            this.pause = !pause;
+            if (!pause) isMuted = false;
+            if (!pause && !isMuted)
+            { 
                 music.GetComponent<AudioSource>().Play();
             } else
             {
@@ -148,7 +162,6 @@ public class GameManager : MonoBehaviour
 
             }
             pauseCanvas.gameObject.SetActive(!pauseCanvas.gameObject.active);
-            this.pause = !pause;
             Time.timeScale = pause ? 0 : 1;
             player.Pause();
 
