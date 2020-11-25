@@ -25890,10 +25890,10 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "\u2026 Me encontr\xE9 con un extra\xF1o se\xF1or de apariencia descuidada
-    (el abuelo de Sim\xF3n), \xE9l clamaba que la superficie es real, que todos podemos
-    llegar a ella y que incluso hay m\xE1s personas en la superficie\u2026 Note que
-    este hombre ten\xEDa quemaduras leves en la piel, \xBFser\xE1n estas quemaduras
-    causadas por el sol como dicen las leyendas?\n"
+    , \xE9l clamaba que la superficie es real, que todos podemos llegar a ella y
+    que incluso hay m\xE1s personas en la superficie\u2026 Note que este hombre ten\xEDa
+    quemaduras leves en la piel, \xBFser\xE1n estas quemaduras causadas por el sol
+    como dicen las leyendas?\n"
 --- !u!222 &1247456386
 CanvasRenderer:
   m_ObjectHideFlags: 0
