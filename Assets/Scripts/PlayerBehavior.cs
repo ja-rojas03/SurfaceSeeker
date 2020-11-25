@@ -10,7 +10,6 @@ public class PlayerBehavior : MonoBehaviour
     private Animator animator;
     private Rigidbody2D rb;
     public GameObject slash;
-    private AudioSource audio;
 
     public float speed = 4f;
     public float jumpSpeed = 7f;
@@ -60,7 +59,6 @@ public class PlayerBehavior : MonoBehaviour
         initialPosition = transform.position;
         initialGravity = rb.gravityScale;
         checkpoint = initialPosition;
-        audio = gameObject.GetComponent<AudioSource>();
 
         pause = false;
 
@@ -429,7 +427,6 @@ public class PlayerBehavior : MonoBehaviour
 
     public void removeHealth()
     {
-        audio.Play(0);
         if(health <= 1)
         {
             //i died
