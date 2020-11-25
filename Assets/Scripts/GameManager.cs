@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
     private Scripts scripts;
     private Text text;
     public Canvas canvas;
+    public GameObject walls;
+
 
     private float timer;
     private float timePerChar;
@@ -84,5 +86,9 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
   
+    public void toggleWalls()
+    {
+        walls.SetActive(!walls.active);
+    }
 
 }

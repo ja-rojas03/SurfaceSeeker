@@ -7,9 +7,8 @@ public class SlashController : MonoBehaviour
     public float speed = 15f;
     private Rigidbody2D rb;
     private GameManager gm;
-    public PlayerBehavior player;
+    private PlayerBehavior player;
     public SpriteRenderer sprite;
-
 
 
     private void Awake()
@@ -17,6 +16,10 @@ public class SlashController : MonoBehaviour
         rb = gameObject.GetComponent<Rigidbody2D>();
         gm = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<GameManager>();
         sprite = gameObject.GetComponent<SpriteRenderer>();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerBehavior>();
+        
+            
+
         //Quaternion rotation = Quaternion.Euler(-1, 0, -90);
         //transform.rotation = rotation;
     }
@@ -49,6 +52,20 @@ public class SlashController : MonoBehaviour
             Destroy(collision.gameObject);
             Destroy(gameObject);
             Debug.Log("i hit En");
+        }
+
+        if (collision.CompareTag("Boss"))
+        {
+            collision.GetComponent<Boss>().removeHealth();
+            Destroy(gameObject);
+            Debug.Log("i hit En");
+        }
+
+        if (collision.CompareTag("Player"))
+        {
+            player.removeHealth();
+            Destroy(gameObject);
+            //Take life away from player 
         }
 
         if (collision.CompareTag("MG"))

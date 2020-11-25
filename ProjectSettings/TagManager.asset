@@ -14,6 +14,8 @@ TagManager:
   - Enemy
   - Wall
   - MG
+  - Slash
+  - Boss
   layers:
   - Default
   - TransparentFX
@@ -68,6 +70,9 @@ TagManager:
     locked: 0
   - name: Middleground
     uniqueID: 3125302263
+    locked: 0
+  - name: another one
+    uniqueID: 55559037
     locked: 0
   - name: HUD
     uniqueID: 452047279

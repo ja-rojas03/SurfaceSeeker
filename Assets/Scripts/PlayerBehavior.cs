@@ -15,6 +15,7 @@ public class PlayerBehavior : MonoBehaviour
     public float jumpSpeed = 7f;
     public float runSpeed = 6f;
     public bool isRunning = false;
+    public bool added = true;
     public float availableJumps = 2f;
 
     private SkillController skillController;
@@ -65,7 +66,7 @@ public class PlayerBehavior : MonoBehaviour
     }
     void Start()
     {
-        if (SceneManager.GetActiveScene().buildIndex > 1)
+        if (SceneManager.GetActiveScene().buildIndex > 1 && added)
         {
             Debug.Log("ADDING SKILS");
             skillController.obtainSkill(Skills.SLASH);
@@ -74,12 +75,46 @@ public class PlayerBehavior : MonoBehaviour
             Debug.Log(skillController.availableSkills.Count);
         }
 
+        if (SceneManager.GetActiveScene().buildIndex > 2 && added)
+        {
+            Debug.Log("ADDING FINAL SKILS");
+            skillController.obtainSkill(Skills.SNAKE);
+            skillController.obtainSkill(Skills.HOVER);
+            Debug.Log(skillController.availableSkills);
+
+
+        }
+
+
     }
 
-    
+
     // Update is called once per frame
     void Update()
     {
+        if (SceneManager.GetActiveScene().buildIndex == 2 && added)
+        {
+            Debug.Log("ADDING SKILS");
+            skillController.obtainSkill(Skills.SLASH);
+            skillController.obtainSkill(Skills.WALLJUMP);
+            skillController.obtainSkill(Skills.DASH);
+            Debug.Log(skillController.availableSkills.Count);
+            added = false;
+        }
+
+        if (SceneManager.GetActiveScene().buildIndex == 3 && added)
+        {
+            Debug.Log("ADDING FINAL SKILS");
+            skillController.obtainSkill(Skills.SLASH);
+            skillController.obtainSkill(Skills.WALLJUMP);
+            skillController.obtainSkill(Skills.DASH);
+            skillController.obtainSkill(Skills.SNAKE);
+            skillController.obtainSkill(Skills.HOVER);
+            Debug.Log(skillController.availableSkills);
+            added = false;
+
+        }
+
 
         if (pause) return;
 
@@ -143,9 +178,9 @@ public class PlayerBehavior : MonoBehaviour
 
         rb.velocity = newVelocity;
 
-
         if (skillController.hasSkill(Skills.SLASH) && Input.GetKeyDown(KeyCode.A))
         {
+
             animator.SetTrigger("slash");
             float val = spriteRenderer.flipX == true
                 ? transform.position.x - 1
@@ -164,6 +199,7 @@ public class PlayerBehavior : MonoBehaviour
 
         if (skillController.hasSkill(Skills.HOVER) && Input.GetKeyDown(KeyCode.D))
         {
+
             rb.gravityScale = 0.5f;
         }
 
@@ -273,6 +309,7 @@ public class PlayerBehavior : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.S) && skillController.hasSkill(Skills.SNAKE))
         {
+
             this.isSnake = !isSnake;
             animator.SetBool("isSnake", isSnake);
             animator.SetTrigger("snake");
@@ -411,6 +448,12 @@ public class PlayerBehavior : MonoBehaviour
 
     public void removeHealth()
     {
+        if(health <= 0)
+        {
+            //i died
+            Debug.Log("I died");
+            return;
+        }
         health -= 1;
     }
 
