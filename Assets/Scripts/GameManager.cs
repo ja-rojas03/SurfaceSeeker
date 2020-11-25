@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
     private bool canwin;
     private PlayerBehavior player;
 
+    public GameObject gameHistory;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -71,6 +73,11 @@ public class GameManager : MonoBehaviour
             //SET CANVAS TEXT HERE 
             SceneManager.LoadScene(activeScene.buildIndex + 1);
         }
+    }
+
+    public void toggleHistory()
+    {
+        gameHistory.SetActive(!gameHistory.active);
     }
 
     public void showMessage()
