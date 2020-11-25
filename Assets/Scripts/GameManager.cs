@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         scripts = gameObject.GetComponent<Scripts>();
-        textToWrite = "HELLO MY BABY HELLO MY HONEY HELLO MY RAGTIME GAAAAAAAAAAAAAAL";
+        textToWrite = "¡EL REY FUE DERROTADO!";
         characterIndex = 0;
         text =  null;
         timePerChar = 0.060f;
@@ -94,6 +94,11 @@ public class GameManager : MonoBehaviour
     public void toggleHistory()
     {
         gameHistory.SetActive(!gameHistory.active);
+    }
+    
+    public void goToMainMenu()
+    {
+        SceneManager.LoadScene(0);
     }
 
     public void showMessage()
