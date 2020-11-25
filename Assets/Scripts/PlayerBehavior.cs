@@ -10,6 +10,7 @@ public class PlayerBehavior : MonoBehaviour
     private Animator animator;
     private Rigidbody2D rb;
     public GameObject slash;
+    private AudioSource audio;
 
     public float speed = 4f;
     public float jumpSpeed = 7f;
@@ -59,7 +60,7 @@ public class PlayerBehavior : MonoBehaviour
         initialPosition = transform.position;
         initialGravity = rb.gravityScale;
         checkpoint = initialPosition;
-
+        audio = gameObject.GetComponent<AudioSource>();
 
         pause = false;
 
@@ -172,8 +173,8 @@ public class PlayerBehavior : MonoBehaviour
 
             animator.SetTrigger("slash");
             float val = spriteRenderer.flipX == true
-                ? transform.position.x - 3
-                : transform.position.x + 3;
+                ? transform.position.x - 1
+                : transform.position.x + 1;
 
             GameObject slashInstance = Instantiate(slash, new Vector3(val, transform.position.y, 0), Quaternion.identity);
             SlashController slashcon = slashInstance.GetComponent<SlashController>();
@@ -423,6 +424,7 @@ public class PlayerBehavior : MonoBehaviour
 
     public void removeHealth()
     {
+        audio.Play(0);
         if(health <= 1)
         {
             //i died

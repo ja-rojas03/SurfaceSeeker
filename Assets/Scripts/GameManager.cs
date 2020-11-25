@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     public GameObject[] hearts;
 
     public Canvas pauseCanvas;
+    public GameObject music;
 
 
     private float timer;
@@ -138,6 +139,14 @@ public class GameManager : MonoBehaviour
     {
         if (pauseCanvas)
         {
+            if (pause)
+            {
+                music.GetComponent<AudioSource>().Play();
+            } else
+            {
+                music.GetComponent<AudioSource>().Pause();
+
+            }
             pauseCanvas.gameObject.SetActive(!pauseCanvas.gameObject.active);
             this.pause = !pause;
             Time.timeScale = pause ? 0 : 1;
