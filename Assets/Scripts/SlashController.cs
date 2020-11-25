@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SlashController : MonoBehaviour
 {
-    public float speed = 15f;
+    private float speed;
     private Rigidbody2D rb;
     private GameManager gm;
     private PlayerBehavior player;
@@ -47,6 +47,8 @@ public class SlashController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+
+        
         if (collision.CompareTag("Enemy") )
         {
             Destroy(collision.gameObject);
@@ -71,13 +73,20 @@ public class SlashController : MonoBehaviour
         if (collision.CompareTag("MG"))
         {
             Destroy(gameObject);
-            Debug.Log("i hit MG");
         }
     }
 
     public void setDirection(bool dir)
     {
         sprite.flipX = dir;
+        Debug.Log("Changed direction" + sprite.flipX);
             
+    }
+
+    public void setSpeed(float speed)
+    {
+        this.speed= speed;
+        Debug.Log("Changed speed" + speed);
+
     }
 }

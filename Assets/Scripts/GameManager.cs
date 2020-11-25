@@ -14,6 +14,11 @@ public class GameManager : MonoBehaviour
     public Canvas canvas;
     public GameObject walls;
 
+    private int playerHealth;
+    public GameObject[] hearts;
+
+    public Canvas pauseCanvas;
+
 
     private float timer;
     private float timePerChar;
@@ -23,6 +28,16 @@ public class GameManager : MonoBehaviour
     private PlayerBehavior player;
 
     public GameObject gameHistory;
+
+    public GameObject abilities;
+    public GameObject slashIcon;
+    public GameObject wallIcon;
+    public GameObject dashIcon;
+    public GameObject snakeIcon;
+    public GameObject hoverIcon;
+
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -35,6 +50,7 @@ public class GameManager : MonoBehaviour
         canwin = false;
         pause = false;
         player = GameObject.FindGameObjectWithTag("Player").gameObject.GetComponent<PlayerBehavior>();
+        playerHealth = player.getHealth();
     }
 
     // Update is called once per frame
@@ -98,4 +114,59 @@ public class GameManager : MonoBehaviour
         walls.SetActive(!walls.active);
     }
 
+    public void updateLife()
+    {
+        playerHealth = player.getHealth();
+        for(int i = 0; i < hearts.Length; i++)
+        {
+            if (playerHealth > i)
+            {
+                hearts[i].SetActive(true);
+            }else
+            {
+                hearts[i].SetActive(false);
+            }
+        }
+    }
+
+    public void pauseGame()
+    {
+        if (pauseCanvas)
+        {
+            pauseCanvas.gameObject.SetActive(!pauseCanvas.gameObject.active);
+            this.pause = !pause;
+            Time.timeScale = pause ? 0 : 1;
+            player.Pause();
+
+        }
+
+    }
+
+    public void toggleTextIcon()
+    {
+        abilities.SetActive(true);
+    }
+    public void toggleDashIcon()
+    {
+        dashIcon.SetActive(true);
+    }
+
+    public void toggleSlashIcon()
+    {
+        slashIcon.SetActive(true);
+    }
+
+    public void toggleWJIcon()
+    {
+        wallIcon.SetActive(true);
+    }
+    public void toggleSnakeIcon()
+    {
+        snakeIcon.SetActive(true);
+    }
+
+    public void toggleHoverIcon()
+    {
+        hoverIcon.SetActive(true);
+    }
 }

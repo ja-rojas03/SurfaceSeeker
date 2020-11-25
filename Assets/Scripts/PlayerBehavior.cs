@@ -42,6 +42,8 @@ public class PlayerBehavior : MonoBehaviour
     private int health = 3;
     private bool isSnake = false;
 
+    private float slashSpeed = 13f;
+
 
 
 
@@ -66,24 +68,6 @@ public class PlayerBehavior : MonoBehaviour
     }
     void Start()
     {
-        if (SceneManager.GetActiveScene().buildIndex > 1 && added)
-        {
-            Debug.Log("ADDING SKILS");
-            skillController.obtainSkill(Skills.SLASH);
-            skillController.obtainSkill(Skills.WALLJUMP);
-            skillController.obtainSkill(Skills.DASH);
-            Debug.Log(skillController.availableSkills.Count);
-        }
-
-        if (SceneManager.GetActiveScene().buildIndex > 2 && added)
-        {
-            Debug.Log("ADDING FINAL SKILS");
-            skillController.obtainSkill(Skills.SNAKE);
-            skillController.obtainSkill(Skills.HOVER);
-            Debug.Log(skillController.availableSkills);
-
-
-        }
 
 
     }
@@ -92,7 +76,7 @@ public class PlayerBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (SceneManager.GetActiveScene().buildIndex == 2 && added)
+        if (SceneManager.GetActiveScene().buildIndex == 3 && added)
         {
             Debug.Log("ADDING SKILS");
             skillController.obtainSkill(Skills.SLASH);
@@ -102,7 +86,7 @@ public class PlayerBehavior : MonoBehaviour
             added = false;
         }
 
-        if (SceneManager.GetActiveScene().buildIndex == 3 && added)
+        if (SceneManager.GetActiveScene().buildIndex == 4 && added)
         {
             Debug.Log("ADDING FINAL SKILS");
             skillController.obtainSkill(Skills.SLASH);
@@ -115,6 +99,11 @@ public class PlayerBehavior : MonoBehaviour
 
         }
 
+
+        if(Input.GetKeyDown(KeyCode.P))
+        {
+            GameObject.FindGameObjectWithTag("MainCamera").GetComponent<GameManager>().pauseGame();
+        }
 
         if (pause) return;
 
@@ -183,17 +172,18 @@ public class PlayerBehavior : MonoBehaviour
 
             animator.SetTrigger("slash");
             float val = spriteRenderer.flipX == true
-                ? transform.position.x - 1
-                : transform.position.x + 1;
+                ? transform.position.x - 3
+                : transform.position.x + 3;
 
             GameObject slashInstance = Instantiate(slash, new Vector3(val, transform.position.y, 0), Quaternion.identity);
             SlashController slashcon = slashInstance.GetComponent<SlashController>();
 
-            float speed = spriteRenderer.flipX == true
-                ? -slashcon.speed
-                : slashcon.speed;
+            float selectedSpeed = spriteRenderer.flipX == true
+                ? -slashSpeed
+                : slashSpeed;
+            Debug.Log("DATA: " + val + ' ' + selectedSpeed + ' ' + spriteRenderer.flipX + ' ');
             slashcon.setDirection(spriteRenderer.flipX);
-            slashcon.speed = speed;
+            slashcon.setSpeed(selectedSpeed);
 
         }
 
@@ -377,25 +367,10 @@ public class PlayerBehavior : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            if (health > 0)
-            {
-
-                removeHealth();
-            }
-            else
-            {
-                //Do death thingy here
-                // maybe reset game ? DO NOT DESTROY OBJ
-                GameObject.FindGameObjectWithTag("MainCamera").GetComponent<GameManager>().retryLevel();
-                Debug.Log("DED");
-            }
+            removeHealth();
         }
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        
-    }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
@@ -448,14 +423,19 @@ public class PlayerBehavior : MonoBehaviour
 
     public void removeHealth()
     {
-        if(health <= 0)
+        if(health <= 1)
         {
             //i died
-            Debug.Log("I died");
+            GameObject.FindGameObjectWithTag("MainCamera").GetComponent<GameManager>().retryLevel();
             return;
         }
         health -= 1;
+        GameObject.FindGameObjectWithTag("MainCamera").GetComponent<GameManager>().updateLife();
     }
 
+    public int getHealth()
+    {
+        return this.health;
+    }
 
 }

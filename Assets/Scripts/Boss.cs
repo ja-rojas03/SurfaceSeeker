@@ -82,10 +82,10 @@ public class Boss : MonoBehaviour
         SlashController slashcon = slashInstance.GetComponent<SlashController>();
 
         float speed = spriteRenderer.flipX == true
-            ? -slashcon.speed - 2f
-            : slashcon.speed + 2f;
+            ? -13f - 2f
+            : 13f + 2f;
         slashcon.setDirection(spriteRenderer.flipX);
-        slashcon.speed = speed;
+        slashcon.setSpeed(speed);
 
         yield return new WaitForSecondsRealtime(Random.Range(2,4));
         attackQueued = false;
